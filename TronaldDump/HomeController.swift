@@ -1,5 +1,5 @@
 //
-//  FirstViewController.swift
+//  HomeController.swift
 //  TronaldDump
 //
 //  Created by Louis Loiseau-Billon on 31/10/2019.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FirstViewController: UIViewController {
+class HomeController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
