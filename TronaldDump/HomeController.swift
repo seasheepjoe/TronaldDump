@@ -22,11 +22,17 @@ class HomeController: UIViewController, WKUIDelegate {
         randomQuoteWV.uiDelegate = self
         self.view.grid(child: randomQuoteWV, x: 0.5, y: 6.5, width: 11, height: 4)
         let api = ApiManager()
+        let header = UIView()
+        self.view.grid(child: header, x: 0.5, y: 0.5, width: 11, height: 1)
         let headerTitle = UILabel()
         headerTitle.text = "Home"
         headerTitle.font = UIFont.boldSystemFont(ofSize: 35)
         
-        self.view.grid(child: headerTitle, x: 0.5, y: 0.5, width: 11, height: 1)
+        let favButton: UIButton = UIButton()
+        favButton.addTarget(self, action: #selector(addFav), for: .touchUpInside)
+        
+        header.grid(child: favButton, x: 10.5, y: 2.5, width: 1, height: 5)
+        header.grid(child: headerTitle, x: 0, y: 0, width: 11, height: 12)
         
         let randomMemeView = UIImageView()
         self.view.grid(child: randomMemeView, x: 0.5, y: 1.5, width: 11, height: 5)
@@ -40,6 +46,7 @@ class HomeController: UIViewController, WKUIDelegate {
                     let blockquote = json["html"] as! String
                     DispatchQueue.main.async {
                         self.randomQuoteID = quoteID
+                        favButton.setImage(UIImage(named: self.favImage()), for: .normal)
                         randomMemeView.image = randomMemeImage
                         let quoteUrl = URL(string: "https://publish.twitter.com/oembed?url=" + quote.source)
                         self.randomQuoteWV.loadHTMLString("<meta name='viewport' content='initial-scale=1.0'/>" + blockquote, baseURL: quoteUrl)
@@ -47,13 +54,6 @@ class HomeController: UIViewController, WKUIDelegate {
                 })
             })
         })
-        
-        let favButton: UIButton = UIButton()
-        favButton.setTitle("Add to favorites", for: .normal)
-        favButton.setTitleColor(UIColor(red: 0, green: 0, blue: 0, alpha: 1), for: .normal)
-        favButton.backgroundColor = UIColor(red: 0.55, green: 0.55, blue: 0.57, alpha: 0.2)
-        favButton.addTarget(self, action: #selector(addFav), for: .touchUpInside)
-//        self.view.grid(child: favButton, x: 0.5, y: 9.5, width: 11, height: 1)
     }
 
     @objc func addFav(_ sender: UIButton) {
@@ -61,11 +61,31 @@ class HomeController: UIViewController, WKUIDelegate {
         if favsQuotes != nil {
             if favsQuotes!.contains(self.randomQuoteID) == false {
                 favsQuotes!.append(self.randomQuoteID)
+                sender.setImage(UIImage(named: "StarFull"), for: .normal)
+            } else {
+                sender.setImage(UIImage(named: "StarEmpty"), for: .normal)
+                if let index = favsQuotes!.index(of: self.randomQuoteID) {
+                    favsQuotes!.remove(at: index)
+                }
             }
         } else {
             favsQuotes = [self.randomQuoteID]
+            sender.setImage(UIImage(named: "StarFull"), for: .normal)
         }
         store.set(favsQuotes, forKey: "favorites_quotes")
+    }
+    
+    func favImage() -> String {
+        var favsQuotes = store.array(forKey: "favorites_quotes") as? [String]
+        if favsQuotes != nil {
+            if favsQuotes!.contains(self.randomQuoteID) == false {
+                return "StarEmpty"
+            } else {
+                return "StarFull"
+            }
+        } else {
+            return "StarEmpty"
+        }
     }
 
 }
