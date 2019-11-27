@@ -8,11 +8,35 @@
 
 import UIKit
 
-class SearchController: UIViewController {
+class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+    var searchResults: [Quote] = []
+    let api = ApiManager()
+    var query: String = ""
+    let searchInput = UITextField()
+    let resultsView = UITableView()
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.searchResults.count
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Make linking
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "searchResultCell", for: indexPath)
+        cell.textLabel?.text = self.searchResults[indexPath.row].value
+        return cell
+    }
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        let api = ApiManager()
+        self.searchInput.delegate = self
         
         let headerTitle = UILabel()
         headerTitle.text = "Search"
@@ -22,28 +46,49 @@ class SearchController: UIViewController {
         
         let searchBar = UIView()
         self.view.grid(child: searchBar, x: 0.5, y: 1.5, width: 11, height: 0.5)
-        let searchInput = UITextField()
+        
         searchInput.placeholder = "Obama, Hillary Clinton ..."
-        
-//        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-//        let image = UIImage(named: "search-icon.png")
-//        imageView.image = image
-        
-//        searchInput.leftView = imageView
-//        searchInput.leftViewMode = .always
         searchInput.clearButtonMode = .whileEditing
         searchInput.returnKeyType = .search
+        
         searchBar.backgroundColor = UIColor(red: 0.55, green: 0.55, blue: 0.57, alpha: 0.2)
         searchBar.layer.cornerRadius = 5
         searchBar.layer.masksToBounds = true
         searchBar.grid(child: searchInput, x: 0.2, y: 0, width: 11.8, height: 12)
         
-        let resultsView = UITableView()
-//        resultsView.dataSource = UserDefaults.standard.array(forKey: "favorites_quotes") as! UITableViewDataSource
         
-        self.view.grid(child: resultsView, x: 0.5, y: 2, width: 12, height: 10.5)
+        self.resultsView.register(SearchResultCell.self, forCellReuseIdentifier: "searchResultCell")
+        self.resultsView.delegate = self
+        self.resultsView.dataSource = self
+        
+        self.view.grid(child: self.resultsView, x: 0.5, y: 2, width: 11, height: 10.5)
     }
-
-
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+        textField.resignFirstResponder()
+        api.get(url: api.baseUrl + "/search/quote?query=" + textField.text!, completion: {data in
+            let results = data as! [String:Any]
+            let results_embedded = results["_embedded"] as! [String: Any]
+            let quotes = results_embedded["quotes"] as! [[String: Any]]
+            for quote in quotes {
+                let value = quote["value"] as! String
+                let quoteId = quote["quote_id"] as! String
+                let embedded = quote["_embedded"] as! [String: Any]
+                let tags = quote["tags"] as! [String]
+                let authorObj = embedded["author"] as! [[String: Any]]
+                let authorName = authorObj[0]["name"] as! String
+                let sourceObj = embedded["source"] as! [[String: Any]]
+                let sourceUrl = sourceObj[0]["url"] as! String
+                let newQuote = Quote(value: value, quote_id: quoteId, tags: tags, author: authorName, source: sourceUrl)
+                self.searchResults.append(newQuote)
+            }
+            
+            DispatchQueue.main.async {
+                self.resultsView.reloadData()
+            }
+        })
+        
+        return true
+    }
 }
-
