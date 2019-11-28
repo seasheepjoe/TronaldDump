@@ -40,15 +40,12 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     override func viewDidLoad() {
         super.viewDidLoad()
         self.searchInput.delegate = self
-        
+    
         let headerTitle = UILabel()
+        let searchBar = UIView()
+        
         headerTitle.text = "Search"
         headerTitle.font = UIFont.boldSystemFont(ofSize: 35)
-        
-        self.view.grid(child: headerTitle, x: 0.5, y: 0.5, width: 11, height: 1)
-        
-        let searchBar = UIView()
-        self.view.grid(child: searchBar, x: 0.5, y: 1.5, width: 11, height: 0.5)
         
         searchInput.placeholder = "Obama, Hillary Clinton ..."
         searchInput.clearButtonMode = .whileEditing
@@ -57,15 +54,16 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
         searchBar.backgroundColor = UIColor(red: 0.55, green: 0.55, blue: 0.57, alpha: 0.2)
         searchBar.layer.cornerRadius = 5
         searchBar.layer.masksToBounds = true
-        searchBar.grid(child: searchInput, x: 0.2, y: 0, width: 11.8, height: 12)
-        
-        
+
         self.resultsView.register(SearchResultCell.self, forCellReuseIdentifier: "searchResultCell")
         self.resultsView.delegate = self
         self.resultsView.dataSource = self
         self.resultsView.showsVerticalScrollIndicator = false
         self.resultsView.reloadData()
         
+        self.view.grid(child: headerTitle, x: 0.5, y: 0.5, width: 11, height: 1)
+        self.view.grid(child: searchBar, x: 0.5, y: 1.5, width: 11, height: 0.5)
+        searchBar.grid(child: searchInput, x: 0.2, y: 0, width: 11.8, height: 12)
         self.view.grid(child: self.resultsView, x: 0, y: 2, width: 11.5, height: 10)
     }
     
@@ -92,11 +90,9 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
             
             DispatchQueue.main.async {
                 self.searchResults = quotesResults
-                
                 self.resultsView.reloadData()
             }
         })
-        
         return true
     }
 }
