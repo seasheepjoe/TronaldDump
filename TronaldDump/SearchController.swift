@@ -24,12 +24,15 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Make linking
+        guard let url = URL(string: self.searchResults[indexPath.row].source) else { return }
+        UIApplication.shared.open(url)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "searchResultCell", for: indexPath)
-        cell.textLabel?.text = self.searchResults[indexPath.row].value
+        let cell = tableView.dequeueReusableCell(withIdentifier: "searchResultCell", for: indexPath) as! SearchResultCell
+        cell.titleLabel.text = self.searchResults[indexPath.row].value
+        cell.twitterButton.titleLabel?.text = self.searchResults[indexPath.row].source
+        cell.loadView()
         return cell
     }
     
@@ -60,12 +63,15 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
         self.resultsView.register(SearchResultCell.self, forCellReuseIdentifier: "searchResultCell")
         self.resultsView.delegate = self
         self.resultsView.dataSource = self
+        self.resultsView.showsVerticalScrollIndicator = false
+        self.resultsView.reloadData()
         
-        self.view.grid(child: self.resultsView, x: 0.5, y: 2, width: 11, height: 10.5)
+        self.view.grid(child: self.resultsView, x: 0, y: 2, width: 11.5, height: 10)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool
     {
+        var quotesResults: [Quote] = []
         textField.resignFirstResponder()
         api.get(url: api.baseUrl + "/search/quote?query=" + textField.text!, completion: {data in
             let results = data as! [String:Any]
@@ -81,10 +87,12 @@ class SearchController: UIViewController, UITableViewDelegate, UITableViewDataSo
                 let sourceObj = embedded["source"] as! [[String: Any]]
                 let sourceUrl = sourceObj[0]["url"] as! String
                 let newQuote = Quote(value: value, quote_id: quoteId, tags: tags, author: authorName, source: sourceUrl)
-                self.searchResults.append(newQuote)
+                quotesResults.append(newQuote)
             }
             
             DispatchQueue.main.async {
+                self.searchResults = quotesResults
+                
                 self.resultsView.reloadData()
             }
         })

@@ -10,13 +10,27 @@ import Foundation
 import UIKit
 
 class SearchResultCell: UITableViewCell {
-    var cellTitle: String = ""
-
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-    }
+    var titleLabel: UILabel = UILabel()
+    var twitterButton: UIButton = UIButton()
+    let screenWidth = UIScreen.main.bounds.width
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    func loadView() {
+        let logoImage = UIImage(named: "TwitterLogo")
+        twitterButton.setImage(logoImage, for: .normal)
+        twitterButton.imageView?.contentMode = .scaleAspectFit
+        titleLabel.frame = CGRect(
+            x: (screenWidth / 12) * 0.75,
+            y: 0,
+            width: screenWidth * 0.7,
+            height: self.frame.height
+        )
+        twitterButton.frame = CGRect(
+            x: (screenWidth * 0.7) + (screenWidth / 12) * 0.75,
+            y: 0,
+            width: screenWidth * 0.3,
+            height: self.frame.height
+        )
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(twitterButton)
     }
 }
