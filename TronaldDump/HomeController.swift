@@ -90,7 +90,7 @@ class HomeController: UIViewController, WKUIDelegate {
         } else {
             return "StarEmpty"
         }
-        return ""
+        return "StarEmpty"
     }
     
     func asString(quote: Quote) -> String? {
