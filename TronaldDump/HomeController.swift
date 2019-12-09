@@ -9,12 +9,14 @@
 import UIKit
 import WebKit
 
+typealias JSONDictionary = [String : Any]
+
 class HomeController: UIViewController, WKUIDelegate {
     
     var randomQuoteWV = WKWebView()
     let store = UserDefaults.standard
-    var randomQuoteID: String = ""
-    
+    var randomQuote: Quote?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let webConfiguration = WKWebViewConfiguration()
@@ -40,13 +42,12 @@ class HomeController: UIViewController, WKUIDelegate {
         api.getRandomMeme(completion: { (data, quoteID) in
             let randomMemeImage = UIImage(data: data)
             api.getQuoteById(quote_id: quoteID, completion: { quote in
-                let data: Quote = quote
                 api.get(url: "https://publish.twitter.com/oembed?url=" + quote.source + "&align=center", completion: { data in
                     let json = data as! [String:Any]
                     let blockquote = json["html"] as! String
                     DispatchQueue.main.async {
-                        self.randomQuoteID = quoteID
-                        favButton.setImage(UIImage(named: self.favImage()), for: .normal)
+                        self.randomQuote = quote
+                        favButton.setImage(UIImage(named: self.getFavImage()), for: .normal)
                         randomMemeView.image = randomMemeImage
                         let quoteUrl = URL(string: "https://publish.twitter.com/oembed?url=" + quote.source)
                         self.randomQuoteWV.loadHTMLString("<meta name='viewport' content='initial-scale=1.0'/>" + blockquote, baseURL: quoteUrl)
@@ -59,34 +60,56 @@ class HomeController: UIViewController, WKUIDelegate {
     @objc func addFav(_ sender: UIButton) {
         var favsQuotes = store.array(forKey: "favorites_quotes") as? [String]
         if favsQuotes != nil {
-            if favsQuotes!.contains(self.randomQuoteID) == false {
-                favsQuotes!.append(self.randomQuoteID)
+            if favsQuotes!.contains(asString(quote: self.randomQuote!)!) == false {
+                favsQuotes!.append(asString(quote: self.randomQuote!)!)
                 sender.setImage(UIImage(named: "StarFull"), for: .normal)
             } else {
                 sender.setImage(UIImage(named: "StarEmpty"), for: .normal)
-                if let index = favsQuotes!.index(of: self.randomQuoteID) {
+                if let index = favsQuotes!.index(of: asString(quote: self.randomQuote!)!) {
                     favsQuotes!.remove(at: index)
                 }
             }
         } else {
-            favsQuotes = [self.randomQuoteID]
+            favsQuotes = [asString(quote: self.randomQuote!)] as! [String]
             sender.setImage(UIImage(named: "StarFull"), for: .normal)
         }
         store.set(favsQuotes, forKey: "favorites_quotes")
     }
     
-    func favImage() -> String {
-        var favsQuotes = store.array(forKey: "favorites_quotes") as? [String]
+    func getFavImage() -> String {
+        let favsQuotes = store.array(forKey: "favorites_quotes") as? [String]
         if favsQuotes != nil {
-            if favsQuotes!.contains(self.randomQuoteID) == false {
-                return "StarEmpty"
-            } else {
-                return "StarFull"
+            for (index, item) in favsQuotes!.enumerated() {
+                let selectedQuote = asObj(string: item)
+                if selectedQuote?.quote_id == self.randomQuote?.quote_id {
+                    return "StarFull"
+                } else {
+                    return "StarEmpty"
+                }
             }
         } else {
             return "StarEmpty"
         }
+        return ""
     }
-
+    
+    func asString(quote: Quote) -> String? {
+        do {
+            let json = try JSONEncoder().encode(quote)
+            let stringified = String(data: json, encoding: .utf8)!
+            return stringified
+        } catch {
+            return nil
+        }
+    }
+    
+    func asObj(string: String) -> Quote? {
+        do {
+            let data = Data(string.utf8)
+            let quote = try JSONDecoder().decode(Quote.self, from: data)
+            return quote
+        } catch {
+            return nil
+        }
+    }
 }
-

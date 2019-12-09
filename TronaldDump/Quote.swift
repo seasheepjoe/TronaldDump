@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Quote {
+class Quote: Codable {
     var value: String = ""
     var quote_id: String = ""
     var tags: [String] = []
