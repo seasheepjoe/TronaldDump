@@ -11,6 +11,9 @@
 		BF7C29572375D30700E61DC8 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7C29562375D30700E61DC8 /* Grid.swift */; };
 		BF7C29592375D6E400E61DC8 /* search-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = BF7C29582375D6E400E61DC8 /* search-icon.png */; };
 		BF7C295B2375DE0800E61DC8 /* Quote.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF7C295A2375DE0800E61DC8 /* Quote.swift */; };
+		BFA1A27F238FD44600843ECC /* FavoritesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA1A27E238FD44600843ECC /* FavoritesController.swift */; };
+		BFA1A281238FD5C200843ECC /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFA1A280238FD5C200843ECC /* SearchResultCell.swift */; };
+		BFAEF6EF239EAAE8009BF69F /* FavoriteQuoteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFAEF6EE239EAAE8009BF69F /* FavoriteQuoteCell.swift */; };
 		BFF9AAB8236B33D6003CDBBE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF9AAB7236B33D6003CDBBE /* AppDelegate.swift */; };
 		BFF9AABA236B33D6003CDBBE /* HomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF9AAB9236B33D6003CDBBE /* HomeController.swift */; };
 		BFF9AABC236B33D6003CDBBE /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF9AABB236B33D6003CDBBE /* SearchController.swift */; };
@@ -19,7 +22,6 @@
 		BFF9AAC4236B33D7003CDBBE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BFF9AAC2236B33D7003CDBBE /* LaunchScreen.storyboard */; };
 		BFF9AACF236B33D7003CDBBE /* TronaldDumpTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF9AACE236B33D7003CDBBE /* TronaldDumpTests.swift */; };
 		BFF9AADA236B33D7003CDBBE /* TronaldDumpUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF9AAD9236B33D7003CDBBE /* TronaldDumpUITests.swift */; };
-		BFF9AAE8236B3BA0003CDBBE /* CategoriesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF9AAE7236B3BA0003CDBBE /* CategoriesController.swift */; };
 		BFF9AAEA236B3D1D003CDBBE /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFF9AAE9236B3D1D003CDBBE /* Api.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,6 +47,9 @@
 		BF7C29562375D30700E61DC8 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		BF7C29582375D6E400E61DC8 /* search-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search-icon.png"; sourceTree = "<group>"; };
 		BF7C295A2375DE0800E61DC8 /* Quote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quote.swift; sourceTree = "<group>"; };
+		BFA1A27E238FD44600843ECC /* FavoritesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesController.swift; sourceTree = "<group>"; };
+		BFA1A280238FD5C200843ECC /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
+		BFAEF6EE239EAAE8009BF69F /* FavoriteQuoteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteQuoteCell.swift; sourceTree = "<group>"; };
 		BFF9AAB4236B33D6003CDBBE /* TronaldDump.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TronaldDump.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFF9AAB7236B33D6003CDBBE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BFF9AAB9236B33D6003CDBBE /* HomeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeController.swift; sourceTree = "<group>"; };
@@ -59,7 +64,6 @@
 		BFF9AAD5236B33D7003CDBBE /* TronaldDumpUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TronaldDumpUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFF9AAD9236B33D7003CDBBE /* TronaldDumpUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TronaldDumpUITests.swift; sourceTree = "<group>"; };
 		BFF9AADB236B33D7003CDBBE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BFF9AAE7236B3BA0003CDBBE /* CategoriesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesController.swift; sourceTree = "<group>"; };
 		BFF9AAE9236B3D1D003CDBBE /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -115,7 +119,6 @@
 				BFF9AAB7236B33D6003CDBBE /* AppDelegate.swift */,
 				BFF9AAB9236B33D6003CDBBE /* HomeController.swift */,
 				BFF9AABB236B33D6003CDBBE /* SearchController.swift */,
-				BFF9AAE7236B3BA0003CDBBE /* CategoriesController.swift */,
 				BFF9AABD236B33D6003CDBBE /* Main.storyboard */,
 				BFF9AAC0236B33D7003CDBBE /* Assets.xcassets */,
 				BFF9AAC2236B33D7003CDBBE /* LaunchScreen.storyboard */,
@@ -124,6 +127,9 @@
 				BF7C29562375D30700E61DC8 /* Grid.swift */,
 				BF7C295A2375DE0800E61DC8 /* Quote.swift */,
 				BF02A918238BDE1E004BDAF4 /* SearchResultCell.swift */,
+				BFA1A27E238FD44600843ECC /* FavoritesController.swift */,
+				BFA1A280238FD5C200843ECC /* SearchResultCell.swift */,
+				BFAEF6EE239EAAE8009BF69F /* FavoriteQuoteCell.swift */,
 			);
 			path = TronaldDump;
 			sourceTree = "<group>";
@@ -281,10 +287,12 @@
 				BF02A919238BDE1E004BDAF4 /* SearchResultCell.swift in Sources */,
 				BFF9AABC236B33D6003CDBBE /* SearchController.swift in Sources */,
 				BFF9AAB8236B33D6003CDBBE /* AppDelegate.swift in Sources */,
-				BFF9AAE8236B3BA0003CDBBE /* CategoriesController.swift in Sources */,
+				BFA1A27F238FD44600843ECC /* FavoritesController.swift in Sources */,
 				BFF9AAEA236B3D1D003CDBBE /* Api.swift in Sources */,
 				BFF9AABA236B33D6003CDBBE /* HomeController.swift in Sources */,
+				BFAEF6EF239EAAE8009BF69F /* FavoriteQuoteCell.swift in Sources */,
 				BF7C295B2375DE0800E61DC8 /* Quote.swift in Sources */,
+				BFA1A281238FD5C200843ECC /* SearchResultCell.swift in Sources */,
 				BF7C29572375D30700E61DC8 /* Grid.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
