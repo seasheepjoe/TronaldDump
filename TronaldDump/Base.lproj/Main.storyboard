@@ -42,37 +42,21 @@
             </objects>
             <point key="canvasLocation" x="1738" y="-16"/>
         </scene>
-        <!--Item-->
+        <!--Favorites-->
         <scene sceneID="kiW-gf-OUF">
             <objects>
-                <viewController id="Fro-Ys-OP8" sceneMemberID="viewController">
+                <viewController id="Fro-Ys-OP8" customClass="FavoritesController" customModule="TronaldDump" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="svX-fC-VWd">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="LWL-UM-OdM"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="JqW-wF-zGh"/>
+                    <tabBarItem key="tabBarItem" title="Favorites" image="FavoritesIcon" id="JqW-wF-zGh"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uSs-ux-TZi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1738" y="1337"/>
-        </scene>
-        <!--Categories-->
-        <scene sceneID="H6o-Jc-PZg">
-            <objects>
-                <viewController id="Nqn-Ua-Cpr" customClass="CategoriesController" customModule="TronaldDump" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Wz8-w4-E33">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="O14-2J-n3D"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Categories" image="CategoriesIcon" id="efm-GO-YTn"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2NL-lr-6T2" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1738" y="660"/>
+            <point key="canvasLocation" x="1738" y="690"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="yl2-sM-qoP">
@@ -86,7 +70,6 @@
                     <connections>
                         <segue destination="9pv-A4-QxB" kind="relationship" relationship="viewControllers" id="u7Y-xg-7CH"/>
                         <segue destination="8rJ-Kc-sve" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
-                        <segue destination="Nqn-Ua-Cpr" kind="relationship" relationship="viewControllers" id="d0Y-zB-zMG"/>
                         <segue destination="Fro-Ys-OP8" kind="relationship" relationship="viewControllers" id="F38-BU-N4F"/>
                     </connections>
                 </tabBarController>
@@ -96,7 +79,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="CategoriesIcon" width="16" height="16"/>
+        <image name="FavoritesIcon" width="16" height="16"/>
         <image name="HomeIcon" width="16" height="16"/>
         <image name="SearchIcon" width="16" height="16"/>
     </resources>

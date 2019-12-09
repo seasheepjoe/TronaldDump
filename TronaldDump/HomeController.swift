@@ -60,18 +60,18 @@ class HomeController: UIViewController, WKUIDelegate {
     @objc func addFav(_ sender: UIButton) {
         var favsQuotes = store.array(forKey: "favorites_quotes") as? [String]
         if favsQuotes != nil {
-            if favsQuotes!.contains(asString(quote: self.randomQuote!)!) == false {
-                favsQuotes!.append(asString(quote: self.randomQuote!)!)
+            if favsQuotes!.contains(self.randomQuote!.toString()!) == false {
+                favsQuotes!.append(self.randomQuote!.toString()!)
                 sender.setImage(UIImage(named: "StarFull"), for: .normal)
             } else {
                 sender.setImage(UIImage(named: "StarEmpty"), for: .normal)
-                if let index = favsQuotes!.index(of: asString(quote: self.randomQuote!)!) {
+                if let index = favsQuotes!.index(of: self.randomQuote!.toString()!) {
                     favsQuotes!.remove(at: index)
                 }
             }
         } else {
-            favsQuotes = [asString(quote: self.randomQuote!)] as! [String]
-            sender.setImage(UIImage(named: "StarFull"), for: .normal)
+            favsQuotes = [self.randomQuote!.toString()] as! [String]
+            sender.setImage(UIImage(named: "StarFull"), for: .normal) as! [String]
         }
         store.set(favsQuotes, forKey: "favorites_quotes")
     }
@@ -80,7 +80,7 @@ class HomeController: UIViewController, WKUIDelegate {
         let favsQuotes = store.array(forKey: "favorites_quotes") as? [String]
         if favsQuotes != nil {
             for (index, item) in favsQuotes!.enumerated() {
-                let selectedQuote = asObj(string: item)
+                let selectedQuote = item.toQuote()
                 if selectedQuote?.quote_id == self.randomQuote?.quote_id {
                     return "StarFull"
                 } else {
@@ -91,25 +91,5 @@ class HomeController: UIViewController, WKUIDelegate {
             return "StarEmpty"
         }
         return "StarEmpty"
-    }
-    
-    func asString(quote: Quote) -> String? {
-        do {
-            let json = try JSONEncoder().encode(quote)
-            let stringified = String(data: json, encoding: .utf8)!
-            return stringified
-        } catch {
-            return nil
-        }
-    }
-    
-    func asObj(string: String) -> Quote? {
-        do {
-            let data = Data(string.utf8)
-            let quote = try JSONDecoder().decode(Quote.self, from: data)
-            return quote
-        } catch {
-            return nil
-        }
     }
 }

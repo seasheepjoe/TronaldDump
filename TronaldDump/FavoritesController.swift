@@ -11,6 +11,7 @@ import UIKit
 
 class FavoritesController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     var favsQuotes: [Quote] = []
+    let store = UserDefaults.standard
     let favsView = UITableView()
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -27,11 +28,26 @@ class FavoritesController: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "searchResultCell", for: indexPath) as! SearchResultCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "favoriteQuoteCell", for: indexPath) as! FavoriteQuoteCell
         cell.titleLabel.text = self.favsQuotes[indexPath.row].value
-        cell.twitterButton.titleLabel?.text = self.favsQuotes[indexPath.row].source
         cell.loadView()
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete) {
+            var favs = store.array(forKey: "favorites_quotes") as! [String]
+            let current = favsQuotes[indexPath.row].toString()
+            if let index = favs.index(of: current!) {
+                favs.remove(at: index)
+                store.set(favs, forKey: "favorites_quotes")
+                self.reloadData()
+            }
+        }
     }
     
     override func viewDidLoad() {
@@ -40,14 +56,30 @@ class FavoritesController: UIViewController, UITableViewDelegate, UITableViewDat
         let headerTitle = UILabel()
         headerTitle.text = "Favorites"
         headerTitle.font = UIFont.boldSystemFont(ofSize: 35)
+        self.view.grid(child: headerTitle, x: 0.5, y: 0.5, width: 11, height: 1)
         
-        self.favsView.register(SearchResultCell.self, forCellReuseIdentifier: "searchResultCell")
+        self.favsView.register(FavoriteQuoteCell.self, forCellReuseIdentifier: "favoriteQuoteCell")
         self.favsView.delegate = self
         self.favsView.dataSource = self
         self.favsView.showsVerticalScrollIndicator = false
         self.favsView.reloadData()
-        
-        self.view.grid(child: headerTitle, x: 0.5, y: 0.5, width: 11, height: 1)
-        self.view.grid(child: self.favsView, x: 0, y: 2, width: 11.5, height: 10)
+        let favs = store.array(forKey: "favorites_quotes") as! [String]
+        for item in favs {
+            favsQuotes.append(item.toQuote()!)
+        }
+        self.view.grid(child: self.favsView, x: 0, y: 1.5, width: 11.5, height: 10)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.reloadData()
+    }
+    
+    func reloadData() {
+        let favs = store.array(forKey: "favorites_quotes") as! [String]
+        favsQuotes = []
+        for item in favs {
+            favsQuotes.append(item.toQuote()!)
+        }
+        self.favsView.reloadData()
     }
 }

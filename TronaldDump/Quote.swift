@@ -23,4 +23,25 @@ class Quote: Codable {
         self.source = source
     }
     
+    func toString() -> String? {
+        do {
+            let json = try JSONEncoder().encode(self)
+            let stringified = String(data: json, encoding: .utf8)!
+            return stringified
+        } catch {
+            return nil
+        }
+    }
+}
+
+extension String {
+    func toQuote() -> Quote? {
+        do {
+            let data = Data(self.utf8)
+            let quote = try JSONDecoder().decode(Quote.self, from: data)
+            return quote
+        } catch {
+            return nil
+        }
+    }
 }
