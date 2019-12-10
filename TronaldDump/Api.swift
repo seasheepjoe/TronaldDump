@@ -101,4 +101,30 @@ class ApiManager: NSObject {
             completion(quote)
         })
     }
+    
+    func login(email: String, password: String, completion: @escaping (Any) -> Void) {
+        let token = UserDefaults.standard.string(forKey: "token") ?? ""
+        let credentials: [String: Any] = ["email": email, "password": password]
+        let jsonCredentials = try? JSONSerialization.data(withJSONObject: credentials)
+        var request = URLRequest(url: URL(string: "http://edu2.shareyourtime.fr/api/auth")!)
+        request.httpMethod = "POST"
+        request.httpBody = jsonCredentials
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            do {
+                guard let data = data, error == nil else {
+                    print(error?.localizedDescription ?? "No data")
+                    return
+                }
+                let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as! [String:Any]
+                completion(json)
+            } catch let error as NSError {
+                print(error)
+            }
+            
+            }.resume()
+    }
 }
